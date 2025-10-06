@@ -15,10 +15,10 @@ VOLUME $SF
 VOLUME $PL
 
 RUN dpkg --add-architecture i386 \
-    && ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone \
     && apt update \
     && apt upgrade -yy \
     && apt install -yy --no-install-recommends \
+       tzdata \
        wget \
        apt-utils \
        ca-certificates \
@@ -27,8 +27,10 @@ RUN dpkg --add-architecture i386 \
        libncurses5:i386 \
        libstdc++6:i386 \
        procps \
-       libtbb1:i386 \
+       libtbb2:i386 \
     && rm -rf /var/lib/apt/lists/*
+
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 RUN mkdir -p /tmp/samp_download ${APP_ROOT}
 
